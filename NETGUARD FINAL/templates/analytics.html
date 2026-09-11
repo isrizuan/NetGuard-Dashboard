@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NetGuard - Analytics</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-dark text-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">
+        <a class="navbar-brand text-warning fw-bold" href="#">🛡️ NetGuard Dashboard</a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/dashboard">Monitor</a>
+            <a class="nav-link active" href="/analytics">Analytics</a>
+            <a class="nav-link text-danger" href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>📊 Network Threat Analytics</h3>
+            <button id="resetAnalyticsBtn" class="btn btn-danger">Reset All Captured Data</button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card bg-secondary p-3 shadow">
+                    <h5 class="text-warning">Threat Severity Breakdown</h5>
+                    <canvas id="severityChart" style="max-height: 280px;"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-secondary p-3 shadow text-center d-flex align-items-center justify-content-center">
+                    <h4 class="text-light">Total Captured Threats</h4>
+                    <h1 class="display-1 text-warning fw-bold" id="totalAlertsCount">0</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-secondary text-light p-3 shadow">
+            <h5 class="text-warning">Historical Threat Records</h5>
+            <table class="table table-dark table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Source IP</th>
+                        <th>Target IP</th>
+                        <th>Threat Type</th>
+                        <th>Severity</th>
+                    </tr>
+                </thead>
+                <tbody id="analyticsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+</body>
+</html>

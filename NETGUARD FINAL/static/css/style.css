@@ -1,0 +1,33 @@
+cat << 'EOF' > "NETGUARD FINAL/static/css/style.css"
+/* NetGuard Custom Dark Theme Enhancements */
+
+body {
+    background-color: #121212 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border-radius: 10px;
+    border: 1px solid #2d2d2d;
+}
+
+.table-dark {
+    background-color: #1e1e1e;
+}
+
+.badge-pulse {
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+        box-shadow: 0 0 0 0px rgba(255, 193, 7, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0px rgba(255, 193, 7, 0);
+    }
+}
+EOF
