@@ -169,7 +169,6 @@ def get_realtime_alerts():
     if not target_ip:
         return jsonify([])
 
-    # Fetch alerts specific to the currently active target IP
     alerts = ThreatAlert.query.filter(
         (ThreatAlert.src_ip == target_ip) | (ThreatAlert.dst_ip == target_ip)
     ).order_by(ThreatAlert.timestamp.desc()).limit(15).all()
@@ -237,6 +236,43 @@ def reset_analytics():
     except Exception as e:
         db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# --- SECURE EXTERNAL THREAT TESTING ROUTE ---
+@app.route('/api/test-threat', methods=['POST'])
+def external_test_threat():
+    data = request.get_json() or {}
+    api_key = data.get('api_key') or request.headers.get('X-API-KEY')
+    
+    # Simple security key check so unauthorized web users cannot post fake alerts
+    if api_key != "netguard-secret-123":
+        return jsonify({'status': 'error', 'message': 'Unauthorized. Invalid API Key.'}), 401
+
+    src_ip = data.get('src_ip', '172.20.10.1')       # Default to your Gateway
+    dst_ip = data.get('dst_ip', '172.20.10.2')       # Default to your PC IP
+    alert_type = data.get('alert_type', 'TCP SYN Port Scan')
+    severity = data.get('severity', 'High')
+
+    alert = ThreatAlert(
+        src_ip=src_ip,
+        dst_ip=dst_ip,
+        alert_type=alert_type,
+        severity=severity
+    )
+    db.session.add(alert)
+    db.session.commit()
+
+    if severity == "High":
+        send_telegram_alert(
+            f"🚨 *HIGH THREAT DETECTED*\n"
+            f"Source IP: `{src_ip}`\n"
+            f"Target IP: `{dst_ip}`\n"
+            f"Type: `{alert_type}`"
+        )
+
+    return jsonify({
+        'status': 'success',
+        'message': f'Threat logged successfully for target {dst_ip}!'
+    })
 
 if __name__ == '__main__':
     with app.app_context():
