@@ -18,8 +18,8 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', 'YOUR_TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', 'YOUR_TELEGRAM_CHAT_ID')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8396604449:AAHFWdCXrcPAD7qfSYbmyT6LfpqniEF3ZhE')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '943418259')
 
 def send_telegram_alert(message):
     if TELEGRAM_BOT_TOKEN != "YOUR_TELEGRAM_BOT_TOKEN":
